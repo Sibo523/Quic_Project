@@ -28,5 +28,5 @@ def compare_files(file1_path, file2_path):
 
 # Example usage
 file1_path = '../bruh.txt'
-file2_path = '../bruhlemur.txt'
+file2_path = '../text_send.txt'
 compare_files(file1_path, file2_path)

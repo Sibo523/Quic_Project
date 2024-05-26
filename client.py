@@ -7,7 +7,9 @@ from tkinter import filedialog
 
 import QuicFunc
 from QuicFunc import *
-
+"""
+    defenition for the Algorithms of resending, intended to corespond with QuicFunc
+"""
 packages_list = {}
 no_acks = []
 ack_list = []
@@ -194,7 +196,7 @@ def sendattach():
     global ack_list
     global no_acks
 
-    filename = filedialog.askopenfilename(initialdir="/home/sibo/Desktop/lemuyr/bruhlemur.txt", title="Select A File",
+    filename = filedialog.askopenfilename(initialdir="/home/sibo/Desktop/lemuyr/text_send.txt", title="Select A File",
                                           filetypes=(("jpeg files", "*.txt"),
                                                      ("all files", "*.*")))  #short cut for now we need to delete
     if (filename == ""):  #if we got nothing then we can't send natting
@@ -221,20 +223,25 @@ def on_entry_click(event):
         firstclick = False
         entry_field.delete(0, "end")  # delete all the text in the entry
 
-
+"""
+    These functions are for the closing of the gui.
+"""
 def on_closing(event=None):
     """This function is to be called when the window is closed."""
     my_msg.set("{quit}")
     send()
-
-
 def sendquit():
     global Running
     on_closing()
     root.destroy()
     Running = False
 
-
+"""
+    This represend the handshake between the client and the server, the client sends packet which the payload is hello
+    meaning it's the start of the connection. It waits for an Ack from the server, meaning it's got the first ack and 
+    we can start sending msgs and files
+    if the packet is lost, it will send again to the server.
+"""
 def send_first_ack():
     print("Send first")
     pack = QuicPackage(0, "hello", CONNECTION_ID)
@@ -265,6 +272,10 @@ def wait_for_ack():
         except Exception as e:
             print(f"An error occurred: {e}")
 
+
+"""
+    Definitions for the Gui used
+"""
 
 root = Tk()
 root.title("ChatIO")
@@ -297,15 +308,25 @@ send_button.place(x=175, y=375)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
+"""
+    Definitions for the socket in which the client and the server will conmminucate.
+"""
 #----Socket code----
 HOST = "127.0.0.1"
 PORT = 33002
 BUFSIZ = 1024
 SERVER_ADDR = (HOST, PORT)
-CONNECTION_ID=int(input("Enter the connection id"))
+"""
+    Choose the mode in which we are going to resend the packetd 
+    there are 3 modes
+    1. time based
+    2. seq based
+    3. time And seq based
+"""
+CONNECTION_ID=int(input("Enter the connection id\n"))
 mode = int(input("Enter the mode of packet loss between 1-3\n"))
 while mode not in [1,2,3]:
-    mode=int(input("bro be trolling 1-3"))
+    mode=int(input("mode between 1-3\n"))
 
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

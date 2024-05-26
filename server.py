@@ -64,8 +64,6 @@ def handle_client(client_address, name):  # Takes client data and address as arg
                 with open(filename,"w") as file:
                     recv_file(file,filename)
                     print("done file")
-            elif msg[:3] == "ACK".encode("utf-8"):
-                print(msg.decode("utf-8"))
     except OSError:
         pass  # Client disconnected or encountered an error
 
@@ -93,7 +91,9 @@ def broadcast_text(text_package: QuicPackage, prefix=""):  # prefix is for name 
         print(client_address)
         QuicFunc.send_package(text_package, server_socket, addr)
     print("done broadcast")
-
+"""
+    broadcast file to all users.
+"""
 
 def broadcast_file(msg, prefix=""):
     path, s = os.path.split(msg)
@@ -159,12 +159,15 @@ def wait_for_connection():
         except Exception as e:
             print(f"An error occurred: {e}")
 
-
+"""
+    definitions for the soecket and the connetion
+"""
 HOST = '127.0.0.1'
 PORT = 33002
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 CONNECTION_ID=0
+
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

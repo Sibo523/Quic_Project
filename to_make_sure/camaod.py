@@ -8,7 +8,7 @@ def create_numbers_file(file_path, start, end):
         print(f"An error occurred: {e}")
 
 # Example usage
-file_path = '../bruhlemur.txt'
+file_path = '../text_send.txt'
 create_numbers_file(file_path, 1, 700000*2)
 
 
